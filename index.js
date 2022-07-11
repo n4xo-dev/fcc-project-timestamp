@@ -28,16 +28,23 @@ app.get("/api/hello", function (req, res) {
 // Timestamp endpoint
 app.get("/api/:date", (req, res) => {
   
-  const validDate = /^\d{4}-\d{2}-\d{2}$|\d{13}/;
+  const validDate = /^\d{4}-\d{2}-\d{2}$|^\d{13}$/;
   if(!validDate.test(req.params.date)){
     res.json({ "error": "Invalid Date" });
     return;
   }
 
-  const date = new Date(req.params.date);
+  const paramDate = req.params.date;
+  let date = new Date(paramDate);
+  if(isNaN(date.getTime())) date = new Date(Number(paramDate));
+  let parsedDate = Date.parse(paramDate);
+  const unix = isNaN(parsedDate) ? date.getTime() : parsedDate;
+  const utc = date.toUTCString();
+
+  console.log(paramDate, date, unix, utc);
   res.json({
-    "unix": Date.parse(req.params.date),
-    "utc": date.toUTCString()
+    "unix": unix,
+    "utc": utc
   })
 
 })
