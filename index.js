@@ -32,7 +32,8 @@ app.get("/api/:date", (req, res) => {
   const paramDate = req.params.date;
   let date = new Date(paramDate);
   
-  if(isNaN(date.getTime())) date = new Date(Number(paramDate));
+  if(isNaN(date.getTime()))
+    date = new Date(Number(paramDate));
   if(isNaN(date.getTime())){
     res.json({ "error": "Invalid Date" });
     return;
