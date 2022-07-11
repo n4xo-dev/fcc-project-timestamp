@@ -36,7 +36,9 @@ app.get("/api/:date", (req, res) => {
 
   const paramDate = req.params.date;
   let date = new Date(paramDate);
+
   if(isNaN(date.getTime())) date = new Date(Number(paramDate));
+  
   let parsedDate = Date.parse(paramDate);
   const unix = isNaN(parsedDate) ? date.getTime() : parsedDate;
   const utc = date.toUTCString();
@@ -48,6 +50,14 @@ app.get("/api/:date", (req, res) => {
   })
 
 })
+
+// Current Time endpoint
+app.get("/api", (req, res) => {
+  res.json({
+    "unix": Math.round(Date.now() / 1000),
+    "utc": new Date().toUTCString()
+  });
+});
 
 
 // listen for requests :)
